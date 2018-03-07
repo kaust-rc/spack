@@ -48,7 +48,7 @@ class Shengbte(Package):
 
     version('1.1.1', '5d5ad00322ed6451c0ba7fe6e32966a8')
 
-    depends_on('mpi%intel')
+    depends_on('intel-mpi%intel')
     # depends_on('mkl')
     depends_on('py-spglib%intel')
 
