@@ -48,8 +48,8 @@ class Shengbte(Package):
 
     version('1.1.1', '5d5ad00322ed6451c0ba7fe6e32966a8')
 
-    depends_on('intel-mpi%intel')
-    # depends_on('mkl')
+    depends_on('mpi%intel')
+    depends_on('mkl%intel')
     depends_on('py-spglib%intel')
 
     def setup_environment(self, spack_env, run_env):
@@ -72,3 +72,6 @@ $(MKLROOT)/lib/intel64/libmkl_intel_lp64.a                                \
         f.close()
         make()
         make('install')
+
+    def test_installation(self)
+        chdir("")
