@@ -39,6 +39,7 @@
 #
 from spack import *
 from os import *
+from shutils import copy
 
 class Shengbte(Package):
     """ShengBTE is a software package for solving the Boltzmann Transport Equation for phonons."""
@@ -46,7 +47,7 @@ class Shengbte(Package):
     homepage = "http://www.shengbte.org/"
     url      = "http://www.shengbte.org/downloads/ShengBTE-v1.1.1-8a63749.tar.bz2"
 
-    version('1.1.1', '5d5ad00322ed6451c0ba7fe6e32966a8')
+    version('1.1.1-8a63749', '5d5ad00322ed6451c0ba7fe6e32966a8')
 
     depends_on('mpi%intel')
     depends_on('mkl%intel')
@@ -63,8 +64,12 @@ class Shengbte(Package):
 
     def install(self, spec, prefix):
         chdir("Src")
-        f=open("arch.make","w")
-        f.write("export FFLAGS=-traceback -debug -O2 -static_intel\nexport LDFLAGS=-L$(PY_SPGLIB_ROOT)/lib -lsymspg\nexport MPIFC=mpiifort\n")
+        copy('../arch.make.example', 'arch.make')
+
+        makefile = FileFilter('arch.make')
+        makefile.filter('export LDFLAGS=.*','export LDFLAGS=-L%s -lsymspg' % spec.['spglib'].prefix.lib)
+        makefile.filter('MPIFC=.*', 'MPIFC=mpiifort')
+        makefile.filter('MKLROOT=.*', 'MKLROOT=%s/mkl' % spec.['intel'].prefix)
         f.write("MKL=$(MKLROOT)/lib/intel64/libmkl_lapack95_lp64.a -Wl,--start-group       \
 $(MKLROOT)/lib/intel64/libmkl_intel_lp64.a                                \
  $(MKLROOT)/lib/intel64/libmkl_sequential.a                               \
@@ -74,4 +79,4 @@ $(MKLROOT)/lib/intel64/libmkl_intel_lp64.a                                \
         make('install')
 
     def test_installation(self)
-        chdir("")
+        pass 
