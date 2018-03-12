@@ -25,10 +25,10 @@
 #
 from spack import *
 from subprocess import call
-import platform
+
 
 class PyThirdorder(Package):
-    """Thirdorder helps ShengBTE and almaBTE users FORCE\_CONSTANTS\_3RD files"""
+    """It helps ShengBTE users create FORCE_CONSTANTS_3RD files effciently"""
 
     homepage = "http://www.shengbte.org"
     url      = "http://www.shengbte.org/downloads/thirdorder-v1.1.1-8526f47.tar.bz2"
@@ -43,31 +43,35 @@ class PyThirdorder(Package):
     def setup_environment(self, spack_env, run_env):
         python_version = self.spec['python'].version.up_to(2)
 
-        run_env.prepend_path('PYTHONPATH', join_path(self.spec['python'].prefix.lib, 
-                             'python{0}'.format(python_version), 'site-packages'))
+        run_env.prepend_path('PYTHONPATH', join_path(
+                          self.spec['python'].prefix.lib,
+                          'python{0}'.format(python_version), 'site-packages'))
         run_env.prepend_path('LIBRARY_PATH', self.spec['python'].prefix.lib)
         run_env.prepend_path('LD_LIBRARY_PATH', self.spec['python'].prefix.lib)
 
-        run_env.prepend_path('PYTHONPATH', join_path(prefix.lib, 
-                             'python{0}'.format(python_version), 'site-packages'))
+        run_env.prepend_path('PYTHONPATH', join_path(prefix.lib,
+                          'python{0}'.format(python_version), 'site-packages'))
         run_env.prepend_path('LIBRARY_PATH', prefix.lib)
         run_env.prepend_path('LD_LIBRARY_PATH', prefix.lib)
 
         run_env.prepend_path('PYTHONPATH', join_path(self.spec['py-numpy'].prefix.lib, 
                              'python{0}'.format(python_version), 'site-packages'))
         run_env.prepend_path('LIBRARY_PATH', self.spec['py-numpy'].prefix.lib)
-        run_env.prepend_path('LD_LIBRARY_PATH', self.spec['py-numpy'].prefix.lib)
+        run_env.prepend_path('LD_LIBRARY_PATH',
+                          self.spec['py-numpy'].prefix.lib)
 
-        run_env.prepend_path('PYTHONPATH', join_path(self.spec['py-scipy'].prefix.lib, 
-                             'python{0}'.format(python_version), 'site-packages'))
+        run_env.prepend_path('PYTHONPATH', join_path(
+                          self.spec['py-scipy'].prefix.lib,
+                          'python{0}'.format(python_version), 'site-packages'))
         run_env.prepend_path('LIBRARY_PATH', self.spec['py-scipy'].prefix.lib)
-        run_env.prepend_path('LD_LIBRARY_PATH', self.spec['py-scipy'].prefix.lib)
+        run_env.prepend_path('LD_LIBRARY_PATH',
+                          self.spec['py-scipy'].prefix.lib)
 
     def patch(self):
         setupfile = FileFilter('setup.py')
         setupfile.filter('LIBRARY_DIRS = .*', 'LIBRARY_DIRS = ["%s"]'
                          % self.spec['spglib'].prefix.lib)
-        setupfile.filter('INCLUDE_DIRS = .*', 'INCLUDE_DIRS = ["%s"]' 
+        setupfile.filter('INCLUDE_DIRS = .*', 'INCLUDE_DIRS = ["%s"]'
                          % self.spec['spglib'].prefix.include)
 
         sourcefile = FileFilter('thirdorder_core.c')
@@ -96,4 +100,5 @@ class PyThirdorder(Package):
             testfile.write('0.0000000000000000  0.0000000000000000\n  ')
             testfile.write('0.2500000000000000  0.2500000000000000')
             testfile.write('  0.2500000000000000')
-        call(['%s/thirdorder_vasp.py' % prefix.bin, 'sow', '4', '4', '4', '-3'])
+        call(['%s/thirdorder_vasp.py'
+              % prefix.bin, 'sow', '4', '4', '4', '-3'])
