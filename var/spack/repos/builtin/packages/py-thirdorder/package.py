@@ -44,28 +44,29 @@ class PyThirdorder(Package):
         python_version = self.spec['python'].version.up_to(2)
 
         run_env.prepend_path('PYTHONPATH', join_path(
-                          self.spec['python'].prefix.lib,
-                          'python{0}'.format(python_version), 'site-packages'))
+            self.spec['python'].prefix.lib,
+            'python{0}'.format(python_version), 'site-packages'))
         run_env.prepend_path('LIBRARY_PATH', self.spec['python'].prefix.lib)
         run_env.prepend_path('LD_LIBRARY_PATH', self.spec['python'].prefix.lib)
 
         run_env.prepend_path('PYTHONPATH', join_path(prefix.lib,
-                          'python{0}'.format(python_version), 'site-packages'))
+            'python{0}'.format(python_version), 'site-packages'))
         run_env.prepend_path('LIBRARY_PATH', prefix.lib)
         run_env.prepend_path('LD_LIBRARY_PATH', prefix.lib)
 
-        run_env.prepend_path('PYTHONPATH', join_path(self.spec['py-numpy'].prefix.lib, 
-                             'python{0}'.format(python_version), 'site-packages'))
+        run_env.prepend_path('PYTHONPATH', join_path(
+            self.spec['py-numpy'].prefix.lib,
+            'python{0}'.format(python_version), 'site-packages'))
         run_env.prepend_path('LIBRARY_PATH', self.spec['py-numpy'].prefix.lib)
         run_env.prepend_path('LD_LIBRARY_PATH',
-                          self.spec['py-numpy'].prefix.lib)
+            self.spec['py-numpy'].prefix.lib)
 
         run_env.prepend_path('PYTHONPATH', join_path(
-                          self.spec['py-scipy'].prefix.lib,
-                          'python{0}'.format(python_version), 'site-packages'))
+            self.spec['py-scipy'].prefix.lib,
+            'python{0}'.format(python_version), 'site-packages'))
         run_env.prepend_path('LIBRARY_PATH', self.spec['py-scipy'].prefix.lib)
         run_env.prepend_path('LD_LIBRARY_PATH',
-                          self.spec['py-scipy'].prefix.lib)
+            self.spec['py-scipy'].prefix.lib)
 
     def patch(self):
         setupfile = FileFilter('setup.py')
